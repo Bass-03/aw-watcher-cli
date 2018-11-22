@@ -25,7 +25,7 @@ if args.end:
     aw_help.shutdown(args.bucket,args.start,args.end,args.activity)
     exit()
 
-#if using gnomepomodoro
+#stat pomodoro timer
 if args.pomodoro:
     cmd = 'gnome-pomodoro --start --no-default-window'
     os.system(cmd)
