@@ -44,3 +44,40 @@ def shutdown(bucket_name,start_time,end_time,activity):
     inserted_event = client.insert_event(bucket_id, shutdown_event)
     rd = relativedelta.relativedelta (end_time, start_time)
     print("Spent {:02}:{:02}:{:02} doing {}:".format(rd.hours, rd.minutes, rd.seconds,activity))
+
+# report activity on bucket between 2 dates
+# defailts to today
+def bucket_report(bucket_name,start_date,end_date):
+    client = ActivityWatchClient("aw-watcher-cli", testing=False)
+    bucket_id = "{}_{}".format(bucket_name, client.hostname)
+    query = "RETURN = query_bucket('{}');".format(bucket_id)
+    events = client.query(query,start_date,end_date)[0]
+    if len(events) == 0:
+        print("No events")
+        exit()
+    events.reverse() #oder from oldest to newest
+    # first date
+    date = parser.parse(events[0]["timestamp"],default=datetime.now()) - timedelta(hours=6) #- CST
+    print(date.date()) #print first date
+    day_duration = 0
+    total_duration = 0
+    for event in events:
+        total_duration += event["duration"]
+        timestamp = parser.parse(event["timestamp"],default=datetime.now()) - timedelta(hours=6) #- CST
+        if date.date() != timestamp.date():
+            date = timestamp
+            print("sum:\t{}".format(format_duration(day_duration))) #duration from prev block
+            print("")
+            day_duration = event["duration"] #reset duration
+            print(date.date()) #print next date
+        else:
+            day_duration += event["duration"]
+        print("\t{}\t{}".format(format_duration(event["duration"]),event["data"]["label"]))
+        #print last day_duration when last event is reached
+        if event == events[-1]:
+            print("sum:\t{}".format(format_duration(day_duration)))
+            #Print total report duration
+            print("total:\t{}".format(format_duration(total_duration)))
+
+def format_duration(seconds):
+    return strftime("%H:%M:%S", gmtime(seconds))
