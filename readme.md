@@ -41,6 +41,8 @@ bucket -a "I am doing this now"
 
 This will start a timer on your current terminal window, to end the activity just interrupt it (ctl + C)
 
+There is a -p option to start/stop [gnome-pomodoro](http://gnomepomodoro.org/) 
+
 You can also ask for help
 
 ```
@@ -50,7 +52,7 @@ bucket -h
 ```
 usage: add-activity.py [-h] [-a ACTIVITY] [-s START] [-e END] Bucket
 
-Track activity on a given bucker in ActivityWatch
+Track activity on a given bucket in ActivityWatch
 
 positional arguments:
   Bucket                Bucket where to track the activity
@@ -58,11 +60,11 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -a ACTIVITY, --activity ACTIVITY
-                        Activity descritpion
+                        Activity description
   -s START, --start_time START
                         Set a start time
   -e END, --end_time END
-                        Set an end time, used for setting arbritary activities
+                        Set an end time, used for setting arbitrary activities
 
 
 ```
