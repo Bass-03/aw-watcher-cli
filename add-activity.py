@@ -1,14 +1,16 @@
 import argparse
 import aw_watch_cli_help as aw_help
+import os
 from time import sleep
 from datetime import datetime, timedelta, timezone
 from dateutil import parser,tz
 
-arg_parser = argparse.ArgumentParser(description='Track activity on a given bucker in ActivityWatch')
+arg_parser = argparse.ArgumentParser(description='Track activity on a given bucket in ActivityWatch')
 arg_parser.add_argument('bucket', metavar='Bucket', type=str, help='Bucket where to track the activity')
-arg_parser.add_argument('-a','--activity', dest='activity',help='Activity descritpion')
+arg_parser.add_argument('-a','--activity', dest='activity',help='Activity description',required=True)
 arg_parser.add_argument('-s','--start_time', dest='start',help='Set a start time', default=datetime.now(timezone.utc))
-arg_parser.add_argument('-e','--end_time', dest='end',help='Set an end time, used for setting arbritary activities')
+arg_parser.add_argument('-e','--end_time', dest='end',help='Set an end time, used for setting arbitrary activities')
+arg_parser.add_argument('-p','--pomodoro',help='start/stop gnome-pomodoro',action='store_true')
 
 args = arg_parser.parse_args()
 #parse start_time if not using the default
@@ -22,11 +24,21 @@ if args.end:
     aw_help.shutdown(args.bucket,args.start,args.end,args.activity)
     exit()
 
+#if using gnomepomodoro
+if args.pomodoro:
+    cmd = 'gnome-pomodoro --start --no-default-window'
+    os.system(cmd)
 # if args.end was not set
 try:
     aw_help.heartbeat(args.bucket,args.start,args.activity)
+
 except (KeyboardInterrupt, SystemExit):
     print("   Finishing Activity ........................")
+    # Stop pomodoro
+    if args.pomodoro:
+        print("pomodoro")
+        cmd = 'gnome-pomodoro --stop --no-default-window'
+        os.system(cmd)
     # Give the dispatcher thread some time to complete sending the last events.
     # If we don't do this the events might possibly queue up and be sent the
     # next time the client starts instead.
