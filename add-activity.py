@@ -7,10 +7,11 @@ from dateutil import parser,tz
 
 arg_parser = argparse.ArgumentParser(description='Track activity on a given bucket in ActivityWatch')
 arg_parser.add_argument('bucket', metavar='Bucket', type=str, help='Bucket where to track the activity')
-arg_parser.add_argument('-a','--activity', dest='activity',help='Activity description',required=True)
-arg_parser.add_argument('-s','--start_time', dest='start',help='Set a start time', default=datetime.now(timezone.utc))
+arg_parser.add_argument('-a','--activity', dest='activity',help='Activity description')
+arg_parser.add_argument('-s','--start_time', dest='start',help='Set a start time')
 arg_parser.add_argument('-e','--end_time', dest='end',help='Set an end time, used for setting arbitrary activities')
 arg_parser.add_argument('-p','--pomodoro',help='start/stop gnome-pomodoro',action='store_true')
+arg_parser.add_argument('-r','--report',help='Show activity report',action='store_true')
 
 args = arg_parser.parse_args()
 #parse start_time if not using the default
