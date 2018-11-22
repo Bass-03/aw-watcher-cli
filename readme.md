@@ -41,7 +41,7 @@ bucket -a "I am doing this now"
 
 This will start a timer on your current terminal window, to end the activity just interrupt it (ctl + C)
 
-There is a -p option to start/stop [gnome-pomodoro](http://gnomepomodoro.org/) 
+There is a -p option to start/stop [gnome-pomodoro](http://gnomepomodoro.org/)
 
 You can also ask for help
 
@@ -65,10 +65,10 @@ optional arguments:
                         Set a start time
   -e END, --end_time END
                         Set an end time, used for setting arbitrary activities
-
+  -p, --pomodoro        start/stop gnome-pomodoro
+  -r, --report          Show activity report
 
 ```
-
 
 ## Contributing
 
