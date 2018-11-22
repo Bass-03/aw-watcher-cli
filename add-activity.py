@@ -14,14 +14,20 @@ arg_parser.add_argument('-p','--pomodoro',help='start/stop gnome-pomodoro',actio
 arg_parser.add_argument('-r','--report',help='Show activity report',action='store_true')
 
 args = arg_parser.parse_args()
-#parse start_time if not using the default
-if isinstance(args.start, str):
+
+# parse time differently if report was requested
+# If sart_time set,
+if args.start:
+    # parse the string
     args.start = parser.parse(args.start,default=datetime.now(timezone(timedelta(hours=-6))))
+else:
+    # default start time
+    args.start = datetime.now(timezone(timedelta(hours=-6)))
+
 # If end_time set, just add the event
 if args.end:
     #parse end_time if not using the default
-    if isinstance(args.end, str):
-        args.end = parser.parse(args.end,default=datetime.now(timezone(timedelta(hours=-6))))
+    args.end = parser.parse(args.end,default=datetime.now(timezone(timedelta(hours=-6))))
     aw_help.shutdown(args.bucket,args.start,args.end,args.activity)
     exit()
 
