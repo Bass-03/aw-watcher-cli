@@ -58,7 +58,6 @@ except (KeyboardInterrupt, SystemExit):
     print("   Finishing Activity ........................")
     # Stop pomodoro
     if args.pomodoro:
-        print("pomodoro")
         cmd = 'gnome-pomodoro --stop --no-default-window'
         os.system(cmd)
     # Give the dispatcher thread some time to complete sending the last events.
