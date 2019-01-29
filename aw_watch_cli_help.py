@@ -61,6 +61,7 @@ def bucket_report(bucket_name,start_date,end_date):
     print(date.date()) #print first date
     day_duration = 0
     total_duration = 0
+    cnt = 1
     for event in events:
         total_duration += event["duration"]
         timestamp = parser.parse(event["timestamp"],default=datetime.now()) - timedelta(hours=6) #- CST
@@ -72,7 +73,8 @@ def bucket_report(bucket_name,start_date,end_date):
             print(date.date()) #print next date
         else:
             day_duration += event["duration"]
-        print("\t{}\t{}".format(format_duration(event["duration"]),event["data"]["label"]))
+        print("{}.\t{}\t{}".format(cnt,format_duration(event["duration"]),event["data"]["label"]))
+        cnt += 1
         #print last day_duration when last event is reached
         if event == events[-1]:
             print("sum:\t{}".format(format_duration(day_duration)))
