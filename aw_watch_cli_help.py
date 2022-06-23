@@ -3,11 +3,11 @@ from datetime import datetime, timedelta, timezone
 from dateutil import relativedelta, parser,tz
 
 from aw_core.models import Event
-from aw_client import ActivityWatchClient
+from aw_client.client import ActivityWatchClient
 
 def heartbeat(bucket_name,start_time,activity):
     client = ActivityWatchClient("aw-watcher-cli", testing=False)
-    bucket_id = "{}_{}".format(bucket_name, client.hostname)
+    bucket_id = "{}_{}".format(bucket_name, client.client_hostname)
     event_type = "cli_ping"
     client.create_bucket(bucket_id, event_type=event_type)
     # Asynchronous loop
@@ -36,7 +36,7 @@ def heartbeat(bucket_name,start_time,activity):
 # insert an event
 def shutdown(bucket_name,start_time,end_time,activity):
     client = ActivityWatchClient("aw-watcher-cli", testing=False)
-    bucket_id = "{}_{}".format(bucket_name, client.hostname)
+    bucket_id = "{}_{}".format(bucket_name, client.client_hostname)
     event_type = "cli_activity"
     client.create_bucket(bucket_id, event_type=event_type)
     shutdown_data = {"label": activity}
@@ -49,7 +49,7 @@ def shutdown(bucket_name,start_time,end_time,activity):
 # defailts to today
 def bucket_report(bucket_name,start_date,end_date):
     client = ActivityWatchClient("aw-watcher-cli", testing=False)
-    bucket_id = "{}_{}".format(bucket_name, client.hostname)
+    bucket_id = "{}_{}".format(bucket_name, client.client_hostname)
     query = "RETURN = query_bucket('{}');".format(bucket_id)
     events = client.query(query,start_date,end_date)[0]
     if len(events) == 0:
